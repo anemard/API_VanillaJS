@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vanilla JS API Calls</title>
+    <style>
+        p {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <h1>Art Institute Artworks</h1>
+    <div id="all-artworks"></div>
+    <button id="load-more">Load More</button>
+
+    <script>
+        const allArtworks = document.getElementById("all-artworks")
+        const loadMoreBtn = document.getElementById("load-more")
+        let count = 1
+
+        loadSomeArtworks = (numberOfArtworks = 1) => {
+            const AI_URL = `https://api.artic.edu/api/v1/artworks?fields=id,title,artist_display,date_display,main_reference_number&page=${numberOfArtworks}&limit=5`
+
+            fetch(AI_URL)
+            .then(response => response.json())
+            .then(responseJson => {
+               console.log(responseJson.data) 
+               for (let singleArtwork of responseJson.data) {
+                    const art = document.createElement("p")
+                    art.innerText = singleArtwork.title
+                    allArtworks.append(art)
+               }
+            })
+        }
+
+        loadSomeArtworks()
+
+        loadMoreBtn.addEventListener('click', () => {
+            count++
+            loadSomeArtworks(count)
+        })
+            
+
+        
+    </script>
+
+</body>
+</html>
